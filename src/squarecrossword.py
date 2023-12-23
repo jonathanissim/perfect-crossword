@@ -60,8 +60,8 @@ class SquareCrossword:
 
     def place_word(self, word):
         # print(f"placing word: {word}")
-        # if self.build_stage == 2:
-        #     print(f"placing word {word}")
+        if self.build_stage == 1:
+            print(f"placing word {word}")
         if self.build_stage % 2 == 0:
             self.across_words.append(word)
         else:
@@ -84,24 +84,15 @@ class SquareCrossword:
             return self._get_next_down_prefix()
 
     def _get_next_across_prefix(self):
-        # self.print_crossword()
-        # print(f"in _get_next_across_prefix build stage = {self.build_stage}")
-        # print(f"in _get_next_across_prefix across words = {self.across_words}")
-        # print(f"in _get_next_across_prefix down words = {self.down_words}")
         prefix_length = self.build_stage // 2
         number_of_completed_across_words = self.build_stage // 2
         return ''.join([self.down_words[i][number_of_completed_across_words] for i in range(prefix_length)])
 
     def _get_next_down_prefix(self):
-        # print(f"in _get_next_down_prefix build stage = {self.build_stage}")
-        # print(f"in _get_next_across_prefix across words = {self.across_words}")
-        # print(f"in _get_next_across_prefix down words = {self.down_words}")
         prefix_length = self.build_stage // 2
         number_of_completed_down_words = self.build_stage // 2
         return ''.join([self.across_words[i][number_of_completed_down_words] for i in range(prefix_length)])
 
-
     def print_crossword(self):
         print(cyan(tabulate(self.across_words), 'bright'))
         print(cyan(tabulate(self.down_words), 'bright'))
-        # print(cyan(tabulate(self.words), ['bright', 'reverse']))

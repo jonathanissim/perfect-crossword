@@ -31,11 +31,12 @@ def main():
     crossword_size = 5
     word_list = filter_fixed_length_words(read_file_into_list("../words.txt"), crossword_size)
     word_list.sort()
+    word_list = word_list[:3000]
 
     # random.shuffle(word_list)
     print(f"number of words = {len(word_list)}")
     trie = marisa_trie.Trie(word_list)
-    # print(trie.keys("ab"))
+    print(trie.keys(""))
 
     Algorithm(trie, crossword_size).find_crosswords()
 
