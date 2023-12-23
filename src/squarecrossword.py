@@ -60,8 +60,8 @@ class SquareCrossword:
 
     def place_word(self, word):
         # print(f"placing word: {word}")
-        if self.build_stage == 2:
-            print(f"placing word {word}")
+        # if self.build_stage == 2:
+        #     print(f"placing word {word}")
         if self.build_stage % 2 == 0:
             self.across_words.append(word)
         else:
