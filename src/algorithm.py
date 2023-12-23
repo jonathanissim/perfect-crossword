@@ -28,7 +28,7 @@ class Algorithm:
             crossword_word_indexes[crossword.get_build_stage()] += 1
 
             # Debugging
-            if crossword.get_build_stage() == 0 and current_position_try_number % 100 == 0:
+            if crossword.get_build_stage() == 0: # and current_position_try_number % 100 == 0:
                 print(f"try {current_position_try_number} = {potential_words[current_position_try_number]}")
             if crossword.get_build_stage() == 0 and current_position_try_number == word_list_length - 1:
                 print(f"done. found {number_of_crosswords} crosswords")
@@ -46,7 +46,7 @@ class Algorithm:
                 continue
             if crossword.get_build_stage() == (self.crossword.size * 2):
                 number_of_crosswords += 1
-
+                print(f"number_of_crosswords = {number_of_crosswords}")
                 crossword.print_crossword()
                 # return crossword
                 crossword.remove_word()
