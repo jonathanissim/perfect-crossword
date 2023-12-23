@@ -52,5 +52,6 @@ def main():
 
     Algorithm(trie, crossword_size).find_crosswords()
 
+
 if __name__ == "__main__":
     main()

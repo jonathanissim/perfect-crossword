@@ -1,6 +1,7 @@
 from squarecrossword import SquareCrossword
 import os, psutil
 
+
 class Algorithm:
     def __init__(self, trie, crossword_size, crossword=None):
         if crossword is None:
@@ -17,7 +18,7 @@ class Algorithm:
         crossword_word_indexes = [0] * self.crossword.size * 2
 
         while True:
-            potential_words = self.trie.keys(crossword.get_next_prefix())  # Note this also calculated in is_legal
+            potential_words = self.trie.keys(crossword.get_next_prefix())
             current_position_try_number = crossword_word_indexes[crossword.get_build_stage()]
             if current_position_try_number >= len(potential_words):
                 crossword_word_indexes[crossword.get_build_stage()] = 0
@@ -44,5 +45,5 @@ class Algorithm:
             if crossword.get_build_stage() == (self.crossword.size * 2):
                 number_of_crosswords += 1
                 crossword.print_crossword()
+                return crossword
                 crossword.remove_word()
-                # return crossword
