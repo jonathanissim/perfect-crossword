@@ -1,5 +1,5 @@
 from squarecrossword import SquareCrossword
-
+import os, psutil
 
 class Algorithm:
     def __init__(self, trie, crossword_size, crossword=None):
@@ -25,13 +25,18 @@ class Algorithm:
                 continue
             crossword_word_indexes[crossword.get_build_stage()] += 1
 
+            # Debugging
             if crossword.get_build_stage() == 1 and current_position_try_number % 100 == 0:
                 print(f"try {current_position_try_number}")
+                print(f"word = {potential_words[current_position_try_number]}")
             if crossword.get_build_stage() == 1 and current_position_try_number == word_list_length - 1:
                 print(f"done. found {number_of_crosswords} crosswords")
                 return
 
-            crossword.place_word(potential_words[current_position_try_number])
+            potential_word = potential_words[current_position_try_number]
+            if potential_word in crossword.get_words_set():
+                continue
+            crossword.place_word(potential_word)
             if not crossword.is_legal(self.trie):
                 # print(f"crossword isn't legal")
                 crossword.remove_word()
