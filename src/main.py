@@ -41,7 +41,7 @@ def main():
     #         file.write(f"{word}\n")
 
     # word_list.sort()
-    word_list = word_list[:14000]
+    word_list = word_list[:500]
 
     # random.shuffle(word_list)
     trie = marisa_trie.Trie(word_list)
