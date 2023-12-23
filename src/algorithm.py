@@ -19,6 +19,7 @@ class Algorithm:
 
         while True:
             potential_words = self.trie.keys(crossword.get_next_prefix())
+            print(f"prefix = {crossword.get_next_prefix()}")
             current_position_try_number = crossword_word_indexes[crossword.get_build_stage()]
             if current_position_try_number >= len(potential_words):
                 crossword_word_indexes[crossword.get_build_stage()] = 0
@@ -38,6 +39,8 @@ class Algorithm:
             if potential_word in crossword.get_words_set():
                 continue
             crossword.place_word(potential_word)
+            print(f"placing {potential_word}")
+            crossword.print_crossword()
             if not crossword.is_legal(self.trie):
                 # print(f"crossword isn't legal")
                 crossword.remove_word()

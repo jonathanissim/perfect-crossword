@@ -104,8 +104,8 @@ class SquareCrossword:
         return ''.join([self.down_words[i][number_of_completed_across_words] for i in range(prefix_length)])
 
     def _get_next_down_prefix(self):
-        prefix_length = self.build_stage // 2
-        number_of_completed_down_words = self.build_stage // 2
+        prefix_length = (self.build_stage + 1) // 2
+        number_of_completed_down_words = (self.build_stage - 1) // 2
         return ''.join([self.across_words[i][number_of_completed_down_words] for i in range(prefix_length)])
 
     def print_crossword(self):
