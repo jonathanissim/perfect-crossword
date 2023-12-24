@@ -111,3 +111,4 @@ class SquareCrossword:
     def print_crossword(self):
         print(cyan(tabulate(self.across_words), 'bright'))
         # print(cyan(tabulate(self.down_words), 'bright'))
+

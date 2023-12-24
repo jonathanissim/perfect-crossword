@@ -4,18 +4,24 @@ import os, psutil
 
 class Algorithm:
     def __init__(self, trie, crossword_size, crossword=None):
+        self.trie = trie
+        self.crossword_size = crossword_size
+        # self.start_index = start_index
         if crossword is None:
             self.crossword = SquareCrossword(crossword_size)
         else:
             self.crossword = crossword
-        self.trie = trie
-        self.crossword_size = crossword_size
+        # if words_to_try is None:
+        #     word_list_length = len(self.trie.keys(""))
+        #     self.words_to_try = word_list_length - start_index
+        # else:
+        #     self.words_to_try = words_to_try
 
-    def find_crosswords(self):
+    def find_crosswords(self, words_to_try, start_index=0):
         number_of_crosswords = 0
-        word_list_length = len(self.trie.keys(""))
         crossword = SquareCrossword(self.crossword.size)
         crossword_word_indexes = [0] * self.crossword.size * 2
+        crossword_word_indexes[0] = start_index
 
         while True:
             potential_words = self.trie.keys(crossword.get_next_prefix())
@@ -28,9 +34,9 @@ class Algorithm:
             crossword_word_indexes[crossword.get_build_stage()] += 1
 
             # Debugging
-            if crossword.get_build_stage() == 0: # and current_position_try_number % 100 == 0:
+            if crossword.get_build_stage() == 0:  # and current_position_try_number % 100 == 0:
                 print(f"try {current_position_try_number} = {potential_words[current_position_try_number]}")
-            if crossword.get_build_stage() == 0 and current_position_try_number == word_list_length - 1:
+            if crossword.get_build_stage() == 0 and current_position_try_number == words_to_try + start_index - 1:
                 print(f"done. found {number_of_crosswords} crosswords")
                 return
 

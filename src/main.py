@@ -6,6 +6,7 @@ import random
 from tabulate import tabulate
 import marisa_trie
 from simple_colors import *
+import multiprocessing
 
 import os, psutil
 
@@ -51,7 +52,16 @@ def main():
 
     # print(f"MB used at start: {psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2}")
 
-    Algorithm(trie, crossword_size).find_crosswords()
+    # Algorithm(trie, crossword_size).find_crosswords(10, start_index=0)
+    alg = Algorithm(trie, crossword_size)
+
+    number_of_processes = 14
+    words_to_try = len(word_list)
+
+    with multiprocessing.Pool() as pool:
+        pool.starmap(alg.find_crosswords,
+                     [((words_to_try // number_of_processes), i * (words_to_try // number_of_processes)) for i
+                      in range(number_of_processes)])
 
 
 if __name__ == "__main__":
