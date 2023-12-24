@@ -32,18 +32,19 @@ def filter_fixed_length_words(word_list: List[str], word_length=5):
 
 
 def main():
-    crossword_size = 6
+    crossword_size = 5
     # word_list = filter_fixed_length_words(read_file_into_list("../word-lists/words.txt"), crossword_size)
-    word_list = filter_fixed_length_words(read_file_into_list("../word-lists/third-million.txt"), crossword_size)
+    # word_list = filter_fixed_length_words(read_file_into_list("../word-lists/third-million.txt"), crossword_size)
+    word_list = filter_fixed_length_words(read_file_into_list("word-lists/wordle/wordle-words.txt"), crossword_size)
 
     # with open("../word-lists/third-million-fours.txt", 'a') as file:
     #     for word in word_list:
     #         file.write(f"{word}\n")
     # return
     # word_list.sort()
-    word_list = word_list[:5000]
+    random.shuffle(word_list)
+    word_list = word_list[:3000]
 
-    # random.shuffle(word_list)
     trie = marisa_trie.Trie(word_list)
     print(trie.keys(""))
     print(f"number of words = {len(word_list)}")
