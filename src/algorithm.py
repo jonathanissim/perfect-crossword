@@ -1,5 +1,13 @@
+import multiprocessing
+
 from squarecrossword import SquareCrossword
 import os, psutil
+
+import shared
+
+
+
+# from main import tries
 
 
 class Algorithm:
@@ -11,6 +19,7 @@ class Algorithm:
             self.crossword = SquareCrossword(crossword_size)
         else:
             self.crossword = crossword
+        # self.lock = multiprocessing.Lock()
         # if words_to_try is None:
         #     word_list_length = len(self.trie.keys(""))
         #     self.words_to_try = word_list_length - start_index
@@ -35,7 +44,10 @@ class Algorithm:
 
             # Debugging
             if crossword.get_build_stage() == 0:  # and current_position_try_number % 100 == 0:
-                print(f"try {current_position_try_number} = {potential_words[current_position_try_number]}")
+                with shared.lock:
+                    shared.shared_list[0] += 1
+                    tries = shared.shared_list[0]
+                print(f"try {tries} = {potential_words[current_position_try_number]}")
             if crossword.get_build_stage() == 0 and current_position_try_number == words_to_try + start_index - 1:
                 print(f"done. found {number_of_crosswords} crosswords")
                 return

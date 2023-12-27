@@ -1,3 +1,4 @@
+import multiprocessing
 from typing import List
 from squarecrossword import SquareCrossword
 from algorithm import Algorithm
@@ -6,11 +7,15 @@ import random
 from tabulate import tabulate
 import marisa_trie
 from simple_colors import *
-import multiprocessing
+# import multiprocessing
+from multiprocessing import Pool, Lock
+from multiprocessing.managers import BaseManager
 
 import os, psutil
+from shared import init
 
-process = psutil.Process()
+
+# process = psutil.Process()
 
 
 def read_file_into_list(file_path):
@@ -41,6 +46,15 @@ def get_words_per_process(number_of_words, number_of_processes):
     return result
 
 
+# def target(iterable_item):
+#     for item in items:
+#         # Do cool stuff
+#         if (... some condition here ...):
+#             lock.acquire()
+#             # Write to stdout or logfile, etc.
+#             lock.release()
+
+
 def main():
     crossword_size = 5
     # word_list = filter_fixed_length_words(read_file_into_list("../word-lists/words.txt"), crossword_size)
@@ -61,12 +75,12 @@ def main():
 
     alg = Algorithm(trie, crossword_size)
 
-    number_of_processes = 4
-    number_of_words_to_try = 16
-
+    number_of_processes = 16
+    number_of_words_to_try = 256
+    l = multiprocessing.Lock()
     # print(words_to_try_per_process(number_of_words_to_try, number_of_processes))
 
-    with multiprocessing.Pool() as pool:
+    with Pool(initializer=init, initargs=(l,)) as pool:
         words_per_process = get_words_per_process(number_of_words_to_try, number_of_processes)
         print(words_per_process)
         pool.starmap(alg.find_crosswords,
