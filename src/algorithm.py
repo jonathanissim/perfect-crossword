@@ -49,7 +49,6 @@ class Algorithm:
                     tries = shared.shared_list[0]
                 print(f"try {tries} = {potential_words[current_position_try_number]}")
             if crossword.get_build_stage() == 0 and current_position_try_number == words_to_try + start_index - 1:
-                print(f"done. found {number_of_crosswords} crosswords")
                 return
 
             potential_word = potential_words[current_position_try_number]
@@ -63,8 +62,10 @@ class Algorithm:
                 crossword.remove_word()
                 continue
             if crossword.get_build_stage() == (self.crossword.size * 2):
-                number_of_crosswords += 1
-                print(f"number_of_crosswords = {number_of_crosswords}")
+                with shared.lock:
+                    shared.shared_list[1] += 1
+                    number_of_crosswords = shared.shared_list[1]
+                    print(f"done. found {number_of_crosswords} crosswords")
                 crossword.print_crossword()
                 # return crossword
                 crossword.remove_word()
