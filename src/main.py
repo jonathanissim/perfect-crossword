@@ -32,6 +32,15 @@ def filter_fixed_length_words(word_list: List[str], word_length=5):
     return [word for word in word_list if len(word) == word_length]
 
 
+def get_words_per_process(number_of_words, number_of_processes):
+    result = [number_of_words // number_of_processes] * number_of_processes
+    if number_of_words % number_of_processes == 0:
+        return result
+
+    result[-1] += number_of_words % number_of_processes
+    return result
+
+
 def main():
     crossword_size = 5
     # word_list = filter_fixed_length_words(read_file_into_list("../word-lists/words.txt"), crossword_size)
@@ -47,21 +56,22 @@ def main():
     word_list = word_list[:3000]
 
     trie = marisa_trie.Trie(word_list)
-    print(trie.keys(""))
+    # print(trie.keys(""))
     print(f"number of words = {len(word_list)}")
 
-    # print(f"MB used at start: {psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2}")
-
-    # Algorithm(trie, crossword_size).find_crosswords(10, start_index=0)
     alg = Algorithm(trie, crossword_size)
 
-    number_of_processes = 14
-    words_to_try = len(word_list)
+    number_of_processes = 4
+    number_of_words_to_try = 16
+
+    # print(words_to_try_per_process(number_of_words_to_try, number_of_processes))
 
     with multiprocessing.Pool() as pool:
+        words_per_process = get_words_per_process(number_of_words_to_try, number_of_processes)
+        print(words_per_process)
         pool.starmap(alg.find_crosswords,
-                     [((words_to_try // number_of_processes), i * (words_to_try // number_of_processes)) for i
-                      in range(number_of_processes)])
+                     [(words_per_process[i], (number_of_words_to_try // number_of_processes) * i) for i in
+                      range(len(words_per_process))])
 
 
 if __name__ == "__main__":
