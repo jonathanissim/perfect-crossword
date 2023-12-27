@@ -75,8 +75,8 @@ def main():
 
     alg = Algorithm(trie, crossword_size)
 
-    number_of_processes = 16
-    number_of_words_to_try = 256
+    number_of_processes = 256
+    number_of_words_to_try = len(word_list)
     l = multiprocessing.Lock()
     # print(words_to_try_per_process(number_of_words_to_try, number_of_processes))
 
