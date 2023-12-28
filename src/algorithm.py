@@ -17,17 +17,10 @@ class Algorithm:
 
         while True:
             potential_words = self.trie.keys(self.crossword.get_next_prefix())
-            # print(f"prefix = {crossword.get_next_prefix()}")
             current_position_try_number = crossword_word_indexes[self.crossword.get_build_stage()]
 
-            # Debugging
-            if self.crossword.get_build_stage() == 0:  # and current_position_try_number % 100 == 0:
-                if crossword_word_indexes[0] == words_to_try + start_index:
-                    return
-                with multiprocess.g_lock:
-                    multiprocess.shared_list[0] += 1
-                    tries = multiprocess.shared_list[0]
-                print(f"try {tries} = {potential_words[current_position_try_number]}")
+            if self._finished_all_words(crossword_word_indexes, start_index, words_to_try):
+                return
 
             if current_position_try_number >= len(potential_words):
                 crossword_word_indexes[self.crossword.get_build_stage()] = 0
@@ -35,23 +28,38 @@ class Algorithm:
                 continue
 
             potential_word = potential_words[current_position_try_number]
+            crossword_word_indexes[self.crossword.get_build_stage()] += 1
+
+            self._debug_prints(potential_word)
+
             if potential_word in self.crossword.get_words_set():
                 continue
+
             self.crossword.place_word(potential_word)
-            crossword_word_indexes[self.crossword.get_build_stage()] += 1
             # print(f"placing {potential_word}")
-            # crossword.print_crossword()
+            # self.crossword.print_crossword()
 
             if not self.crossword.is_legal(self.trie):
                 self.crossword.remove_word()
                 continue
+
             if self.crossword.get_build_stage() == (self.crossword.size * 2):
-                with multiprocess.g_lock:
-                    multiprocess.shared_list[1] += 1
-                    number_of_crosswords = multiprocess.shared_list[1]
-                print(f"Found {number_of_crosswords} crosswords")
-                self.crossword.print_crossword()
-                self.crossword.remove_word()
-    
-    def _place_potential_word(self):
-        pass
+                self._found_complete_crossword()
+
+    def _finished_all_words(self, crossword_word_indexes, start_index, words_to_try):
+        return self.crossword.get_build_stage() == 0 and crossword_word_indexes[0] == words_to_try + start_index
+
+    def _debug_prints(self, potential_word):
+        if self.crossword.get_build_stage() == 0:  # and current_position_try_number % 100 == 0:
+            with multiprocess.g_lock:
+                multiprocess.shared_list[0] += 1
+                tries = multiprocess.shared_list[0]
+            print(f"try {tries} = {potential_word}")
+
+    def _found_complete_crossword(self):
+        with multiprocess.g_lock:
+            multiprocess.shared_list[1] += 1
+            number_of_crosswords = multiprocess.shared_list[1]
+        print(f"Found {number_of_crosswords} crosswords")
+        self.crossword.print_crossword()
+        self.crossword.remove_word()

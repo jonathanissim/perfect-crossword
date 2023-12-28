@@ -20,7 +20,7 @@ def main():
     # print(trie.keys(""))
     print(f"number of words = {len(word_list)}")
 
-    find_crosswords_multiprocessing(crossword_size, trie, word_list, number_of_processes=32, max_words=32)
+    find_crosswords_multiprocessing(crossword_size, trie, word_list, number_of_processes=16, max_words=16)
 
 
 if __name__ == "__main__":
