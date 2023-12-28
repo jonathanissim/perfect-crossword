@@ -43,7 +43,7 @@ class Algorithm:
                 self.crossword.remove_word()
                 continue
 
-            if self.crossword.get_build_stage() == (self.crossword.size * 2):
+            if self.crossword.get_build_stage() == self.crossword.size * 2:
                 self._found_complete_crossword()
 
     def _finished_all_words(self, crossword_word_indexes, start_index, words_to_try):
@@ -52,14 +52,15 @@ class Algorithm:
     def _debug_prints(self, potential_word):
         if self.crossword.get_build_stage() == 0:  # and current_position_try_number % 100 == 0:
             with multiprocess.g_lock:
-                multiprocess.shared_list[0] += 1
-                tries = multiprocess.shared_list[0]
+                multiprocess.number_of_tried_words.value += 1
+                tries = multiprocess.number_of_tried_words.value
             print(f"try {tries} = {potential_word}")
 
     def _found_complete_crossword(self):
         with multiprocess.g_lock:
-            multiprocess.shared_list[1] += 1
-            number_of_crosswords = multiprocess.shared_list[1]
+            multiprocess.number_of_crosswords.value += 1
+            number_of_crosswords = multiprocess.number_of_crosswords.value
+            multiprocess.shared_list.append(self.crossword.get_words())
         print(f"Found {number_of_crosswords} crosswords")
         self.crossword.print_crossword()
         self.crossword.remove_word()

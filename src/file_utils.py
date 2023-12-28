@@ -12,6 +12,9 @@ def read_file_into_list(file_path):
 
     return word_list
 
-# with open("../word-lists/third-million-fours.txt", 'a') as file:
-    #     for word in word_list:
-    #         file.write(f"{word}\n")
+
+def write_list_to_file(list_of_word_lists, file_path):
+    with open(file_path, 'w') as file:
+        for word_list in list_of_word_lists:
+            line = ','.join(word_list)
+            file.write(f"{line}\n")

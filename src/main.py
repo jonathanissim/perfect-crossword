@@ -2,7 +2,7 @@ from typing import List
 import random
 import marisa_trie
 from multiprocess import find_crosswords_multiprocessing
-from file_utils import read_file_into_list
+from file_utils import read_file_into_list, write_list_to_file
 
 
 def filter_fixed_length_words(word_list: List[str], word_length=5):
@@ -20,7 +20,8 @@ def main():
     # print(trie.keys(""))
     print(f"number of words = {len(word_list)}")
 
-    find_crosswords_multiprocessing(crossword_size, trie, word_list, number_of_processes=16, max_words=16)
+    crosswords = find_crosswords_multiprocessing(crossword_size, trie, word_list, number_of_processes=512)
+    write_list_to_file(crosswords, "crosswords/words-crosswords.txt")
 
 
 if __name__ == "__main__":
