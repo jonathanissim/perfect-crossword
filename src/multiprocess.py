@@ -21,7 +21,6 @@ def find_crosswords_multiprocessing(crossword_size, trie, word_list, number_of_p
     return shared_list
 
 
-
 def initialize_lock(lock):
     global g_lock
     g_lock = lock
@@ -32,5 +31,3 @@ def _get_words_per_process(number_of_words, number_of_processes):
     if number_of_words % number_of_processes != 0:
         result[-1] += number_of_words % number_of_processes
     return result
-
-

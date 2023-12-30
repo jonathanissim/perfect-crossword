@@ -1,5 +1,6 @@
 from squarecrossword import SquareCrossword
 import multiprocess
+import os, signal
 
 
 class Algorithm:
